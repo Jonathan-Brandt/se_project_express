@@ -1,5 +1,5 @@
-const router = require("express").Router;
+const router = require("express").Router();
 
-router.length("/users", () => console.log("Joe Mama"));
+router.get("/", () => console.log("Joe Mama"));
 
-module.exports(router);
+module.exports = router;

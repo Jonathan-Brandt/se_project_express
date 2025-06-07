@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const userRouter = require("./routes/users.js");
+const mainRouter = require("./routes/index.js");
 
 const app = express();
 
@@ -13,7 +13,7 @@ mongoose
   })
   .catch((e) => console.error(e));
 
-app.use("/", userRouter);
+app.use("/", mainRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
