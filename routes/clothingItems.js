@@ -2,6 +2,6 @@ const router = require("express").Router();
 
 router.get("/");
 router.post("/:clothingId");
-router.delete("/");
+router.delete("/:clothingId");
 
 module.exports = router;
