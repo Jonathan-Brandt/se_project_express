@@ -12,8 +12,9 @@ const getClothing = (req, res) => {
 
 const postClothing = (req, res) => {
   const { name, weather, imageUrl } = req.body;
+  const owner = req.user._id;
   clothingItem
-    .create({ name, weather, imageUrl })
+    .create({ name, weather, imageUrl, owner })
     .then((clothingItem) => res.status(201).send(clothingItem))
     .catch((err) => {
       console.error(err);
@@ -27,15 +28,15 @@ const postClothing = (req, res) => {
 const deleteClothing = (req, res) => {
   const { clothingId } = req.params;
   clothingItem
-    .findById(clothingId)
+    .findByIdAndDelete(clothingId)
     .orFail()
-    .then((clothingItem) => res.status(201).send(clothingItem))
+    .then((clothingItem) => res.status(200).send(clothingItem))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res.status(404).send({ message: "Item not found" });
       } else if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(400).send({ message: "Invalid item" });
       }
       return res.status(500).send({ message: err.message });
     });
