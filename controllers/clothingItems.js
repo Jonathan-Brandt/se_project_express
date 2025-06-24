@@ -1,4 +1,5 @@
 const clothingItem = require("../models/clothingItem");
+const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("../utils/errors");
 
 const getClothing = (req, res) => {
   clothingItem
@@ -6,7 +7,9 @@ const getClothing = (req, res) => {
     .then((clothing) => res.status(200).send(clothing))
     .catch((err) => {
       console.error(err);
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(DEFAULT)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -19,9 +22,11 @@ const postClothing = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(DEFAULT)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -34,11 +39,13 @@ const deleteClothing = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: "Item not found" });
+        return res.status(NOT_FOUND).send({ message: "Item not found" });
       } else if (err.name === "CastError") {
-        return res.status(400).send({ message: "Invalid item" });
+        return res.status(BAD_REQUEST).send({ message: "Invalid item" });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(DEFAULT)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
