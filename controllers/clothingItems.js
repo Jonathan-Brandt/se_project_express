@@ -18,7 +18,7 @@ const postClothing = (req, res) => {
   const owner = req.user._id;
   clothingItem
     .create({ name, weather, imageUrl, owner })
-    .then((clothingItem) => res.status(201).send(clothingItem))
+    .then((createdItem) => res.status(201).send(createdItem))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -35,12 +35,13 @@ const deleteClothing = (req, res) => {
   clothingItem
     .findByIdAndDelete(clothingId)
     .orFail()
-    .then((clothingItem) => res.status(200).send(clothingItem))
+    .then((deletedItem) => res.status(200).send(deletedItem))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item" });
       }
       return res

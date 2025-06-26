@@ -1,7 +1,5 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-
 const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("../utils/errors");
+const ClothingItem = require("../models/clothingItem");
 
 const likeItem = (req, res) =>
   ClothingItem.findByIdAndUpdate(
@@ -15,7 +13,8 @@ const likeItem = (req, res) =>
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid data" });
       }
       return res
@@ -35,7 +34,8 @@ const dislikeItem = (req, res) =>
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid data" });
       }
       return res
