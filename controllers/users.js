@@ -1,6 +1,11 @@
 const User = require("../models/user");
 
-const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("../utils/errors");
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  DEFAULT,
+  CONFLICT,
+} = require("../utils/errors");
 
 const getUsers = (req, res) => {
   User.find({})
@@ -14,13 +19,18 @@ const getUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, avatar } = req.body;
-  User.create({ name, avatar })
+  const { name, avatar, email, password } = req.body;
+  User.create({ name, avatar, email, password })
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+      }
+      if (err.name === "ConflictError") {
+        return res
+          .status(CONFLICT)
+          .send({ message: "Conflict Error, please use a unique email" });
       }
       return res
         .status(DEFAULT)
