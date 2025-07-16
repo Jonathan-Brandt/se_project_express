@@ -1,19 +1,16 @@
 const User = require("../models/user");
-const {
-  BAD_REQUEST,
-  NOT_FOUND,
-  DEFAULT,
-  CONFLICT,
-} = require("../utils/errors");
+const { AUTHERROR } = require("../utils/errors");
 
-const findUserByCredentials = (req, res) => {
+module.exports.login = (req, res) => {
   const { email, password } = req.body;
-  User.find({ email, password })
-    .then((users) => res.status(200).send(users))
+
+  return User.FindUserByCredentials(email, password)
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      return res.status(AUTHERROR).send({
+        message:
+          "Credentials do not match those in our records, please try again",
+      });
     });
 };

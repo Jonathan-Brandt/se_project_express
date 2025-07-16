@@ -6,9 +6,12 @@ const DEFAULT = 500;
 
 const CONFLICT = 409;
 
+const AUTHERROR = 401;
+
 module.exports = {
   BAD_REQUEST,
   NOT_FOUND,
   DEFAULT,
   CONFLICT,
+  AUTHERROR,
 };
