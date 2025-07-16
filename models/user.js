@@ -45,9 +45,7 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
       if (!matched) {
         return Promise.reject(new Error("Incorrect email or password"));
       }
-      res.send({
-        token,
-      });
+      return token;
     });
   });
 };

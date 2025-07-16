@@ -4,7 +4,7 @@ const { AUTHERROR } = require("../utils/errors");
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  return User.FindUserByCredentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
