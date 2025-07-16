@@ -10,7 +10,7 @@ module.exports.login = (req, res) => {
       console.error(err);
       return res.status(AUTHERROR).send({
         message:
-          "Credentials do not match those in our records, please try again",
+          "The credentials do not match those in our records, please try again",
       });
     });
 };

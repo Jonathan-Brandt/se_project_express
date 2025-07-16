@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const { token } = require("../utils/config");
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 2, maxlength: 30 },
@@ -44,7 +45,9 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
       if (!matched) {
         return Promise.reject(new Error("Incorrect email or password"));
       }
-      return user;
+      res.send({
+        token,
+      });
     });
   });
 };
