@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const { AUTHERROR } = require("../utils/errors");
 
-module.exports.login = (req, res) => {
+const login = (req, res) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -14,3 +14,5 @@ module.exports.login = (req, res) => {
       });
     });
 };
+
+module.exports = { login };
