@@ -5,7 +5,12 @@ const login = (req, res) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
-    .then((user) => res.status(200).send(user))
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
+      return res.send({ token });
+    })
     .catch((err) => {
       console.error(err);
       return res.status(AUTHERROR).send({
