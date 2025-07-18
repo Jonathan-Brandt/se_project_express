@@ -1,19 +1,29 @@
 const { JWT_SECRET } = require("../utils/config");
 const { AUTHERROR } = require("../utils/errors");
+const jwt = require("jsonwebtoken");
+
+const handleAuthError = (res) => {
+  return res.status(AUTHERROR).send({ message: "Authorization Error" });
+};
 
 const authMiddleware = (req, res, next) => {
-  const token = authorization.replace("Bearer", "");
-  payload = jwt.verify(token, JWT_SECRET);
+  const { authorization } = req.headers;
+
+  if (!authorization || !authorization.startsWith("Bearer ")) {
+    return handleAuthError(res);
+  }
+
+  const token = authorization.replace("Bearer ", "");
+  const payload = jwt.verify(token, JWT_SECRET);
+
+  try {
+    payload;
+  } catch (err) {
+    return handleAuthError(res);
+  }
+
   req.user = payload;
-  token
-    .find({})
-    .then((userToken) => res.status(200).send(userToken))
-    .catch((err) => {
-      console.error(err);
-      return res
-        .status(AUTHERROR)
-        .send({ message: "Authentication error, please try again" });
-    });
+
   next();
 };
 

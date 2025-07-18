@@ -10,8 +10,8 @@ router.use("/users", userRouter);
 router.use("/items", clothesRouter);
 router.use("/items", likesRouter);
 
-app.post("/signin", login);
-app.post("/signup", createUser);
+router.post("/signin", login);
+router.post("/signup", createUser);
 
 router.use((req, res) =>
   res.status(NOT_FOUND).json({ message: "Resource not found" })

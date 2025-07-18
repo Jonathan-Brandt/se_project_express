@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const { AUTHERROR } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
+const jwt = require("jsonwebtoken");
 
 const login = (req, res) => {
   const { email, password } = req.body;
