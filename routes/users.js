@@ -6,8 +6,10 @@ const {
   getCurrentUser,
   createUser,
 } = require("../controllers/users");
+const { findByIdAndUpdate } = require("../models/user");
+const { useImperativeHandle } = require("react");
 
-router.get("/users/me", getCurrentUser, authMiddleware);
-router.patch("/users/me", updateProfile);
+router.get("/users/me", authMiddleware, getCurrentUser);
+router.patch("/users/me", authMiddleware);
 
 module.exports = router;
