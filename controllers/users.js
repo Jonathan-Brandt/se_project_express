@@ -57,8 +57,29 @@ const getCurrentUser = (req, res) => {
     });
 };
 
+const updateProfile = (req, res) => {
+  const { userId } = req.user;
+  const { name, avatar } = req.body;
+  User.findByIdAndUpdate(userId, { name, avatar })
+    .orFail()
+    .then((user) => res.status(201).send(user))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "Resource not found" });
+      }
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+      }
+      return res
+        .status(DEFAULT)
+        .send({ message: "An error has occurred on the server" });
+    });
+};
+
 module.exports = {
   getUsers,
   getCurrentUser,
   createUser,
+  updateProfile,
 };

@@ -1,5 +1,10 @@
 const clothingItem = require("../models/clothingItem");
-const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("../utils/errors");
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  DEFAULT,
+  FORBIDDEN,
+} = require("../utils/errors");
 
 const getClothing = (req, res) => {
   clothingItem
@@ -31,6 +36,7 @@ const postClothing = (req, res) => {
 };
 
 const deleteClothing = (req, res) => {
+  const { userId } = req.user;
   const { clothingId } = req.params;
   clothingItem
     .findByIdAndDelete(clothingId)
@@ -38,6 +44,12 @@ const deleteClothing = (req, res) => {
     .then((deletedItem) => res.status(200).send(deletedItem))
     .catch((err) => {
       console.error(err);
+      if (clothingId !== userId) {
+        return res
+          .status(FORBIDDEN)
+          .send({ message: "You are not allowed to access this data" });
+      }
+
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }

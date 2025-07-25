@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes/index");
+const cors = require("cors");
 
 const app = express();
 
@@ -16,6 +17,8 @@ mongoose
   .catch((e) => console.error(e));
 
 app.use("/", mainRouter);
+
+app.use(cors());
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
