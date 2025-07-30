@@ -14,10 +14,10 @@ const authMiddleware = (req, res, next) => {
   }
 
   const token = authorization.replace("Bearer ", "");
-  const payload = jwt.verify(token, JWT_SECRET);
 
+  let payload;
   try {
-    payload;
+    payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
     return handleAuthError(res);
   }

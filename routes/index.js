@@ -7,9 +7,9 @@ const { createUser } = require("../controllers/users");
 const { NOT_FOUND } = require("../utils/errors");
 const { authMiddleware } = require("../middlewares/auth");
 
-router.use("/users", userRouter, authMiddleware);
-router.use("/items", clothesRouter, authMiddleware);
-router.use("/items", likesRouter, authMiddleware);
+router.use("/users", authMiddleware, userRouter);
+router.use("/items", authMiddleware, clothesRouter);
+router.use("/items", authMiddleware, likesRouter);
 
 router.post("/signin", login);
 router.post("/signup", createUser);

@@ -6,6 +6,12 @@ const jwt = require("jsonwebtoken");
 const login = (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res
+      .status(AUTHERROR)
+      .send({ message: "Please enter email and password" });
+  }
+
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
@@ -15,10 +21,12 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res.status(AUTHERROR).send({
-        message:
-          "The credentials do not match those in our records, please try again",
-      });
+      if (err.message === "invalid emal or password") {
+        return res.status(AUTHERROR).send({
+          message:
+            "The credentials do not match those in our records, please try again",
+        });
+      }
     });
 };
 

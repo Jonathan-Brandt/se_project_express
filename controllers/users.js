@@ -20,22 +20,24 @@ const getUsers = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
-  User.create({ name, avatar, email, password })
-    .then((user) => res.status(201).send(user))
-    .catch((err) => {
-      console.error(err);
-      if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
-      }
-      if (err.name === "ConflictError") {
+  bcrypt.hash(password, 10).then((hash) => {
+    User.create({ name, avatar, email, password: hash })
+      .then((user) => res.status(201).send(user))
+      .catch((err) => {
+        console.error(err);
+        if (err.name === "ValidationError") {
+          return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+        }
+        if (err.code === "11000") {
+          return res
+            .status(CONFLICT)
+            .send({ message: "Conflict Error, please use a unique email" });
+        }
         return res
-          .status(CONFLICT)
-          .send({ message: "Conflict Error, please use a unique email" });
-      }
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
-    });
+          .status(DEFAULT)
+          .send({ message: "An error has occurred on the server" });
+      });
+  });
 };
 
 const getCurrentUser = (req, res) => {
