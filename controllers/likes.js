@@ -29,7 +29,7 @@ const dislikeItem = (req, res) =>
     { new: true }
   )
     .orFail()
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {

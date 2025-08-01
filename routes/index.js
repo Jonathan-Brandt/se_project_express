@@ -8,7 +8,7 @@ const { NOT_FOUND } = require("../utils/errors");
 const { authMiddleware } = require("../middlewares/auth");
 
 router.use("/users", authMiddleware, userRouter);
-router.use("/items", authMiddleware, clothesRouter);
+router.use("/items", clothesRouter);
 router.use("/items", authMiddleware, likesRouter);
 
 router.post("/signin", login);

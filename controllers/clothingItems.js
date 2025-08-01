@@ -36,20 +36,24 @@ const postClothing = (req, res) => {
 };
 
 const deleteClothing = (req, res) => {
-  const { userId } = req.user;
+  const { _id } = req.user;
   const { clothingId } = req.params;
   clothingItem
-    .findByIdAndDelete(clothingId)
+    .findById(clothingId)
     .orFail()
-    .then((deletedItem) => res.status(200).send(deletedItem))
-    .catch((err) => {
-      console.error(err);
-      if (clothingId !== userId) {
+    .then((item) => {
+      if (item.owner.toString() !== _id) {
         return res
           .status(FORBIDDEN)
           .send({ message: "You are not allowed to access this data" });
       }
 
+      return item
+        .deleteOne()
+        .then(() => res.status(200).send({ message: "Item deleted" }));
+    })
+    .catch((err) => {
+      console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
