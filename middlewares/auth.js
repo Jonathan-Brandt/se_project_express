@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 const { AUTHERROR } = require("../utils/errors");
-
 const handleAuthError = (res) => {
   return res.status(AUTHERROR).send({ message: "Authorization Error" });
 };
@@ -24,7 +23,7 @@ const authMiddleware = (req, res, next) => {
 
   req.user = payload;
 
-  next();
+  return next();
 };
 
 module.exports = { authMiddleware };
