@@ -1,8 +1,11 @@
 # WTWR (What to Wear?): Back End
 
-The back-end project is focused on creating a server for the WTWR application. You’ll gain a deeper understanding of how to work with databases, set up security and testing, and deploy web applications on a remote machine. The eventual goal is to create a server with an API and user authorization.
+The back-end project is focused on creating a server for the WTWR application.
 
-The main technologies and languages used to run and test this project in its current iteration incliude MongoDB, Postman, Express and Node
+The main technologies and languages used to run and test this project in its current iteration incliude MongoDB, Postman, Express and Node.js
+
+- Project Pitch
+  https://www.loom.com/share/adf5dcd354e94b148a2bd5072e3d9e3f
 
 ## Running the Project
 
@@ -10,6 +13,10 @@ The main technologies and languages used to run and test this project in its cur
 
 `npm run dev` — to launch the server with the hot reload feature
 
-### Testing
+### Important Information
 
-Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 13
+Project domains are as follows -
+
+wtwrjb.jumpingcrab.com
+www.wtwrjb.jumpingcrab.com
+api.wtwrjb.jumpingcrab.com
