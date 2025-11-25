@@ -12,7 +12,7 @@ const validateEmail = (value, helpers) => {
   if (validator.isEmail(value)) {
     return value;
   }
-  return helpers.errpr("string.uri");
+  return helpers.error("string.uri");
 };
 
 const validateCardBody = celebrate({
@@ -56,3 +56,10 @@ const validateID = celebrate({
     }),
   }),
 });
+
+export {
+  validateCardBody,
+  validateUserInfoBody,
+  validateAuthentication,
+  validateID,
+};
