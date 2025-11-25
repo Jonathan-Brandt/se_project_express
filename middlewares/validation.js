@@ -1,5 +1,5 @@
-const { Joi, celebrate } = require("celebrate");
-const validator = require("validator");
+import { celebrate, Joi } from "celebrate";
+import validator from "validator";
 
 const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
