@@ -8,7 +8,7 @@ const {
   postClothing,
   deleteClothing,
 } = require("../controllers/clothingItems");
-const { likeItem, dislikeItem } = require("../controllers/likes");
+const { likeItem, dislikeItem } = require("../controllers/clothingItems");
 
 router.get("/", getClothing);
 router.post("/", validateCardBody, authMiddleware, postClothing);
