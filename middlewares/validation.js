@@ -57,7 +57,7 @@ const validateID = celebrate({
   }),
 });
 
-export {
+module.exports = {
   validateCardBody,
   validateUserInfoBody,
   validateAuthentication,
