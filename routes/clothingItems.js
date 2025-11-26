@@ -24,7 +24,7 @@ router.delete(
   deleteClothing
 );
 
-router.put("/:itemId/likes", validateItemId, likeItem);
-router.delete("/:itemId/likes", validateItemId, dislikeItem);
+router.put("/:itemId/likes", validateItemId, authMiddleware, likeItem);
+router.delete("/:itemId/likes", validateItemId, authMiddleware, dislikeItem);
 
 module.exports = router;
