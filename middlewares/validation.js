@@ -53,24 +53,19 @@ const validateAuthentication = celebrate({
   }),
 });
 
-const validateID = celebrate({
+const validateItemId = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().alphanum().length(24).required().messages({
-      "string.length": "ID must be exactly 24 characters long",
-      "string.alphanum": "ID must contain only alphanumeric characters",
-      "string.empty": "ID is required",
-    }),
     itemId: Joi.string().alphanum().length(24).required().messages({
       "string.length": "ID must be exactly 24 characters long",
       "string.alphanum": "ID must contain only alphanumeric characters",
       "string.empty": "ID is required",
     }),
+  }),
+});
+
+const validateClothingId = celebrate({
+  params: Joi.object().keys({
     clothingId: Joi.string().alphanum().length(24).required().messages({
-      "string.length": "ID must be exactly 24 characters long",
-      "string.alphanum": "ID must contain only alphanumeric characters",
-      "string.empty": "ID is required",
-    }),
-    userId: Joi.string().alphanum().length(24).required().messages({
       "string.length": "ID must be exactly 24 characters long",
       "string.alphanum": "ID must contain only alphanumeric characters",
       "string.empty": "ID is required",
@@ -82,5 +77,6 @@ module.exports = {
   validateCardBody,
   validateUserInfoBody,
   validateAuthentication,
-  validateID,
+  validateItemId,
+  validateClothingId,
 };

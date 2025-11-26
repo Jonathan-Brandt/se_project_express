@@ -7,7 +7,7 @@ const {
   validateAuthentication,
 } = require("../middlewares/validation");
 
-router.get("/me", validateUserInfoBody, getCurrentUser);
-router.patch("/me", validateAuthentication, updateProfile);
+router.get("/me", validateAuthentication, getCurrentUser);
+router.patch("/me", validateUserInfoBody, updateProfile);
 
 module.exports = router;
