@@ -35,21 +35,16 @@ const validateUserInfoBody = celebrate({
       "string.empty": 'The "imageUrl" field must be filled in',
       "string.uri": 'the "imageUrl" field must contain a valid url',
     }),
-    email: Joi.string().required().email().custom(validateEmail).messages({
-      "string.empty": "Please enter an email address",
-      "string.uri": "Please enter a valid email",
-    }),
-    password: Joi.string().required().min(8),
   }),
 });
 
 const validateAuthentication = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email().custom(validateEmail).messages({
-      "string.empty": "Please enter an email address",
-      "string.uri": "Please enter a valid email",
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum().length(24).required().messages({
+      "string.length": "ID must be exactly 24 characters long",
+      "string.alphanum": "ID must contain only alphanumeric characters",
+      "string.empty": "ID is required",
     }),
-    password: Joi.string().required().min(8),
   }),
 });
 
