@@ -38,16 +38,6 @@ const validateUserInfoBody = celebrate({
   }),
 });
 
-const validateAuthentication = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().alphanum().length(24).required().messages({
-      "string.length": "ID must be exactly 24 characters long",
-      "string.alphanum": "ID must contain only alphanumeric characters",
-      "string.empty": "ID is required",
-    }),
-  }),
-});
-
 const validateItemId = celebrate({
   params: Joi.object().keys({
     itemId: Joi.string().alphanum().length(24).required().messages({
