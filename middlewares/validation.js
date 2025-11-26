@@ -84,5 +84,3 @@ module.exports = {
   validateAuthentication,
   validateID,
 };
-
-//comment
