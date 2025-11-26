@@ -35,6 +35,10 @@ const validateUserInfoBody = celebrate({
       "string.empty": 'The "imageUrl" field must be filled in',
       "string.uri": 'the "imageUrl" field must contain a valid url',
     }),
+    email: Joi.string().required().custom(validateEmail).messages({
+      "string.empty": 'The "email" field must be filled in',
+      "string.uri": 'the "email" field must contain a valid email',
+    }),
   }),
 });
 
