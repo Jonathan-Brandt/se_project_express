@@ -61,7 +61,6 @@ const validateClothingId = celebrate({
 module.exports = {
   validateCardBody,
   validateUserInfoBody,
-  validateAuthentication,
   validateItemId,
   validateClothingId,
 };
