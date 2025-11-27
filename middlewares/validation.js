@@ -16,8 +16,8 @@ const validateEmail = (value, helpers) => {
 };
 
 const validateSignIn = celebrate({
-  body: Joi.object.keys({
-    email: Joi.string().required().custom(validateURL).messages({
+  body: Joi.object().keys({
+    email: Joi.string().required().custom(validateEmail).messages({
       "string.empty": 'The "email" field must be filled in',
       "string.uri": 'the "email" field must contain a valid email',
     }),
