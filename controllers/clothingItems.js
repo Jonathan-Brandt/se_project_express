@@ -110,12 +110,9 @@ const dislikeItem = (req, res) =>
     });
 
 module.exports = {
-  likeItem,
-  dislikeItem,
-};
-
-module.exports = {
   getClothing,
   postClothing,
   deleteClothing,
+  likeItem,
+  dislikeItem,
 };
