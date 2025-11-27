@@ -3,22 +3,18 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const { JWT_SECRET } = require("../utils/config");
 
-const {
-  BAD_REQUEST,
-  NOT_FOUND,
-  DEFAULT,
-  CONFLICT,
-  AUTHERROR,
-} = require("../utils/errors");
+const { BadRequestError } = require("../errors/badRequestError");
+const { DefaultError } = require("../errors/defaultError");
+const { NotFoundError } = require("../errors/notFoundError");
+const { ConflictError } = require("../errors/conflictError");
+const { AuthorizationError } = require("../errors/authError");
 
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send(users))
     .catch((err) => {
       console.error(err);
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      throw new DefaultError("An error has occurred on the server");
     });
 };
 
@@ -34,16 +30,14 @@ const createUser = (req, res) => {
       .catch((err) => {
         console.error(err);
         if (err.name === "ValidationError") {
-          return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+          throw new BadRequestError("Invalid data provided");
         }
         if (err.code === 11000) {
-          return res
-            .status(CONFLICT)
-            .send({ message: "Conflict Error, please use a unique email" });
+          throw new ConflictError(
+            "Conflict error: please enter the proper email"
+          );
         }
-        return res
-          .status(DEFAULT)
-          .send({ message: "An error has occurred on the server" });
+        throw new DefaultError("An error has occurred on the server");
       });
   });
 };
@@ -56,14 +50,12 @@ const getCurrentUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
+        throw new NotFoundError("Resource not found");
       }
       if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+        throw new BadRequestError("Invalid data provided");
       }
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      throw new DefaultError("An error has occurred on the server");
     });
 };
 
@@ -80,14 +72,12 @@ const updateProfile = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
+        throw new NotFoundError("Resource not found");
       }
       if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+        throw new BadRequestError("Invalid data provided");
       }
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      throw new DefaultError("An error has occurred on the server");
     });
 };
 
@@ -95,9 +85,7 @@ const login = (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(BAD_REQUEST)
-      .send({ message: "Please enter email and password" });
+    throw new NotFoundError("Resource not found");
   }
 
   return User.findUserByCredentials(email, password)
@@ -110,14 +98,11 @@ const login = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.message === "invalid emal or password") {
-        return res.status(AUTHERROR).send({
-          message:
-            "The credentials do not match those in our records, please try again",
-        });
+        throw new AuthorizationError(
+          "The credentials do not match those in our records, please try again"
+        );
       }
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      throw new DefaultError("An error has occurred on the server");
     });
 };
 

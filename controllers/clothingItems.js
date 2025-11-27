@@ -1,10 +1,9 @@
 const clothingItem = require("../models/clothingItem");
-const {
-  BAD_REQUEST,
-  NOT_FOUND,
-  DEFAULT,
-  FORBIDDEN,
-} = require("../utils/errors");
+
+const { BadRequestError } = require("../errors/badRequestError");
+const { DefaultError } = require("../errors/defaultError");
+const { NotFoundError } = require("../errors/notFoundError");
+const { ForbiddenError } = require("../errors/forbiddenError");
 
 const getClothing = (req, res) => {
   clothingItem
@@ -12,9 +11,7 @@ const getClothing = (req, res) => {
     .then((clothing) => res.status(200).send(clothing))
     .catch((err) => {
       console.error(err);
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      throw new DefaultError("An error has occurred on the server");
     });
 };
 
@@ -27,11 +24,9 @@ const postClothing = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+        throw new BadRequestError("Invalid data provided");
       }
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      throw new DefaultError("An error has occurred on the server");
     });
 };
 
@@ -43,9 +38,7 @@ const deleteClothing = (req, res) => {
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== _id) {
-        return res
-          .status(FORBIDDEN)
-          .send({ message: "You are not allowed to access this data" });
+        throw new ForbiddenError("You are not allowed to access this data");
       }
 
       return item
@@ -55,14 +48,12 @@ const deleteClothing = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Item not found" });
+        throw new NotFoundError("Resource not found");
       }
       if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid item" });
+        throw new BadRequestError("Invalid data provided");
       }
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      throw new DefaultError("An error has occurred on the server");
     });
 };
 const likeItem = (req, res) =>
@@ -77,14 +68,12 @@ const likeItem = (req, res) =>
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
+        throw new NotFoundError("Resource not found");
       }
       if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+        throw new BadRequestError("Invalid data provided");
       }
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      throw new DefaultError("An error has occurred on the server");
     });
 
 const dislikeItem = (req, res) =>
@@ -99,14 +88,12 @@ const dislikeItem = (req, res) =>
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
+        throw new NotFoundError("Resource not found");
       }
       if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+        throw new BadRequestError("Invalid data provided");
       }
-      return res
-        .status(DEFAULT)
-        .send({ message: "An error has occurred on the server" });
+      throw new DefaultError("An error has occurred on the server");
     });
 
 module.exports = {

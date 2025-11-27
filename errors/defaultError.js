@@ -1,10 +1,10 @@
 const { DEFAULT } = require("../utils/errors");
 
-class defaultError extends Error {
+class DefaultError extends Error {
   constructor(message) {
     super(message);
     this.statusCode = DEFAULT;
   }
 }
 
-module.exports = { defaultError };
+module.exports = { DefaultError };
