@@ -5,17 +5,17 @@ const { DefaultError } = require("../errors/defaultError");
 const { NotFoundError } = require("../errors/notFoundError");
 const { ForbiddenError } = require("../errors/forbiddenError");
 
-const getClothing = (req, res) => {
+const getClothing = (req, res, next) => {
   clothingItem
     .find({})
     .then((clothing) => res.status(200).send(clothing))
     .catch((err) => {
       console.error(err);
-      throw new DefaultError("An error has occurred on the server");
+      return next(new DefaultError("An error has occurred on the server"));
     });
 };
 
-const postClothing = (req, res) => {
+const postClothing = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
   const owner = req.user._id;
   clothingItem
@@ -24,13 +24,13 @@ const postClothing = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        throw new BadRequestError("Invalid data provided");
+        return next(new BadRequestError("Invalid data provided"));
       }
-      throw new DefaultError("An error has occurred on the server");
+      return next(new DefaultError("An error has occurred on the server"));
     });
 };
 
-const deleteClothing = (req, res) => {
+const deleteClothing = (req, res, next) => {
   const { _id } = req.user;
   const { clothingId } = req.params;
   clothingItem
@@ -48,15 +48,15 @@ const deleteClothing = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        throw new NotFoundError("Resource not found");
+        return next(new NotFoundError("Resource not found"));
       }
       if (err.name === "CastError") {
-        throw new BadRequestError("Invalid data provided");
+        return next(new BadRequestError("Invalid data provided"));
       }
-      throw new DefaultError("An error has occurred on the server");
+      return next(new DefaultError("An error has occurred on the server"));
     });
 };
-const likeItem = (req, res) =>
+const likeItem = (req, res, next) =>
   clothingItem
     .findByIdAndUpdate(
       req.params.itemId,
@@ -68,15 +68,15 @@ const likeItem = (req, res) =>
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        throw new NotFoundError("Resource not found");
+        return next(new NotFoundError("Resource not found"));
       }
       if (err.name === "CastError") {
-        throw new BadRequestError("Invalid data provided");
+        return next(new BadRequestError("Invalid data provided"));
       }
-      throw new DefaultError("An error has occurred on the server");
+      return next(new DefaultError("An error has occurred on the server"));
     });
 
-const dislikeItem = (req, res) =>
+const dislikeItem = (req, res, next) =>
   clothingItem
     .findByIdAndUpdate(
       req.params.itemId,
@@ -88,12 +88,12 @@ const dislikeItem = (req, res) =>
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        throw new NotFoundError("Resource not found");
+        return next(new NotFoundError("Resource not found"));
       }
       if (err.name === "CastError") {
-        throw new BadRequestError("Invalid data provided");
+        return next(new BadRequestError("Invalid data provided"));
       }
-      throw new DefaultError("An error has occurred on the server");
+      return next(new DefaultError("An error has occurred on the server"));
     });
 
 module.exports = {

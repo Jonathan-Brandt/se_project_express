@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["https://www.wtwrjb.jumpingcrab.com", "http://localhost:3001"],
+    origin: ["https://www.wtwrjb.jumpingcrab.com", "http://localhost:3000"],
   })
 );
 app.use(express.json());

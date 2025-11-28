@@ -9,16 +9,16 @@ const { NotFoundError } = require("../errors/notFoundError");
 const { ConflictError } = require("../errors/conflictError");
 const { AuthorizationError } = require("../errors/authError");
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.status(200).send(users))
     .catch((err) => {
       console.error(err);
-      throw new DefaultError("An error has occurred on the server");
+      return next(new DefaultError("An error has occurred on the server"));
     });
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
   bcrypt.hash(password, 10).then((hash) => {
     User.create({ name, avatar, email, password: hash })
@@ -30,19 +30,19 @@ const createUser = (req, res) => {
       .catch((err) => {
         console.error(err);
         if (err.name === "ValidationError") {
-          throw new BadRequestError("Invalid data provided");
+          return next(new BadRequestError("Invalid data provided"));
         }
         if (err.code === 11000) {
-          throw new ConflictError(
-            "Conflict error: please enter the proper email"
+          return next(
+            new ConflictError("Conflict error: please enter the proper email")
           );
         }
-        throw new DefaultError("An error has occurred on the server");
+        return next(new DefaultError("An error has occurred on the server"));
       });
   });
 };
 
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   const { _id } = req.user;
   User.findById(_id)
     .orFail()
@@ -50,16 +50,16 @@ const getCurrentUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        throw new NotFoundError("Resource not found");
+        return next(new NotFoundError("Resource not found"));
       }
       if (err.name === "ValidationError") {
-        throw new BadRequestError("Invalid data provided");
+        return next(new BadRequestError("Invalid data provided"));
       }
-      throw new DefaultError("An error has occurred on the server");
+      return next(new DefaultError("An error has occurred on the server"));
     });
 };
 
-const updateProfile = (req, res) => {
+const updateProfile = (req, res, next) => {
   const { _id } = req.user;
   const { name, avatar } = req.body;
   User.findByIdAndUpdate(
@@ -72,16 +72,16 @@ const updateProfile = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        throw new NotFoundError("Resource not found");
+        return next(new NotFoundError("Resource not found"));
       }
       if (err.name === "CastError") {
-        throw new BadRequestError("Invalid data provided");
+        return next(new BadRequestError("Invalid data provided"));
       }
-      throw new DefaultError("An error has occurred on the server");
+      return next(new DefaultError("An error has occurred on the server"));
     });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -98,11 +98,13 @@ const login = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.message === "invalid emal or password") {
-        throw new AuthorizationError(
-          "The credentials do not match those in our records, please try again"
+        return next(
+          new AuthorizationError(
+            "The credentials do not match those in our records, please try again"
+          )
         );
       }
-      throw new DefaultError("An error has occurred on the server");
+      return next(new DefaultError("An error has occurred on the server"));
     });
 };
 
