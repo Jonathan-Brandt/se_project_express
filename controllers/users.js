@@ -97,7 +97,7 @@ const login = (req, res, next) => {
     })
     .catch((err) => {
       console.error(err);
-      if (err.message === "invalid emal or password") {
+      if (err.message === "Incorrect email or password") {
         return next(
           new AuthorizationError(
             "The credentials do not match those in our records, please try again"

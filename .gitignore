@@ -2,7 +2,7 @@
 logs
 *.log
 npm-debug.log*
-request-log
+request.log
 
 
 # Dependency directory

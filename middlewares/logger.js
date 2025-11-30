@@ -15,7 +15,7 @@ const requestLogger = expressWinston.logger({
       format: messageFormat,
     }),
     new winston.transports.File({
-      filename: "request-log",
+      filename: "request.log",
       format: winston.format.json(),
     }),
   ],

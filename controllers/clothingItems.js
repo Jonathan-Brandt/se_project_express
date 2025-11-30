@@ -53,7 +53,7 @@ const deleteClothing = (req, res, next) => {
       if (err.name === "CastError") {
         return next(new BadRequestError("Invalid data provided"));
       }
-      return next(new DefaultError("An error has occurred on the server"));
+      return next(err);
     });
 };
 const likeItem = (req, res, next) =>
