@@ -38,7 +38,9 @@ const deleteClothing = (req, res, next) => {
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== _id) {
-        throw new ForbiddenError("You are not allowed to access this data");
+        return next(
+          new ForbiddenError("You are not allowed to access this data")
+        );
       }
 
       return item

@@ -85,7 +85,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    throw new NotFoundError("Resource not found");
+    return next(new NotFoundError("Resource not found"));
   }
 
   return User.findUserByCredentials(email, password)

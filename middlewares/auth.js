@@ -3,7 +3,7 @@ const { JWT_SECRET } = require("../utils/config");
 const { AuthorizationError } = require("../errors/authError");
 
 const handleAuthError = () => {
-  AuthorizationError("Authorization Error");
+  return next(new AuthorizationError("Authorization Error"));
 };
 
 const authMiddleware = (req, res, next) => {
@@ -19,7 +19,7 @@ const authMiddleware = (req, res, next) => {
   try {
     payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
-    return handleAuthError(res);
+    return next(new AuthorizationError("Authorization required"));
   }
 
   req.user = payload;
